@@ -44,21 +44,26 @@ The problem will be address in a sequence of phases that will build on previous 
 * DaTamer will have it's own email address that it works with to receive and process emails
 
 ### Phase 2:  Traditional, sharable organization of emails
-The engineers generating the monitoring status emails (mse's) can sometimes control the content of the subject and body.  By developing a classification system, the content of the mse's can be adjusted to make classification easier.
+In this phase we implement traditional organization of MSEs and add communication/tracking about who is handling alerts.  We do this with two steps:
+
+* Move from an email distribution list to a single email account that engineers share (sharing is temporary for early phases and will be replaced in a later phase)
+* Add organizational information to those MSEs that can be easily enhanced with the data
+
+The engineers generating the monitoring status emails (MSEs) can sometimes control the content of the subject and body.  By developing a classification system, the content of the MSEs can be adjusted to make classification easier.  Then, an automated system can be developed to organize the MSEs according to the added data in the email subject / body.
 
 #### Severity classification
-MSE's typically come severities of information, warning, critical and scheduled.  By adding an uncomming string on the subject line indicating the severity, it can be coded into DaTamer how to process the email.  For example:
+MSE's typically come in severities of information, warning, critical.  By adding an uncommon string indicating the severity on the subject line, it can be coded into DaTamer how to process the email.  For example:
 
 * :info: - informational
 * :warn: - warning message
-* :critical: - This results in a page or other critical processing
+* :critical: - The system generating the MSE typically handles sending a page for these during this phase.  But the information is added to the email for future use.
 
 #### Schedule classification
 While the schedule can vary widely, checking for scheduled emails can be relatively easy.
 
-* :sched-perday-N/V: - Scheduled email expecting N (a number is used here) per day.  The system could check at any given time and find N mse's in the last 24 hours.  V is the allowed variance.  If count of mse's is more than that plus/minus the variance, generate an event / alert.  If the "/V" is not provided, it is assumed to be zero.
-* :sched-permonth-N/V: - This is a scheduled email expecting N (a number is used here per month.  If count of mse's is more than that plus/minus the variance, generate an event / alert.
-* :sched-perhour-N/V: - Same but for each hour.  If count of mse's is more than that plus/minus the variance, generate an event / alert.
+* :sched-perday-N/V: - Scheduled email expecting N (a number is used here) per day.  The system could check at any given time and find N MSEs in the last 24 hours.  V is the allowed variance.  If count of MSEs is more than that plus/minus the variance, generate an event / alert.  If the "/V" is not provided, it is assumed to be zero.
+* :sched-permonth-N/V: - This is a scheduled email expecting N (a number is used here per month.  If count of MSEs is more than that plus/minus the variance, generate an event / alert.
+* :sched-perhour-N/V: - Same but for each hour.  If count of MSEs is more than that plus/minus the variance, generate an event / alert.
 
 #### Organizational classification
 Applications are typically composed of multiple tiers such as presentation, business logic, data tier, monitoring, etc.  Organization mse's by the classification can help identify patterns of events.  Each company, organization or business unit will have its own unique classification.  Many MSEs will be able to be custominzed to include an organizational identifier such as:
