@@ -50,9 +50,34 @@ The engineers generating the monitoring status emails (mse's) can sometimes cont
 MSE's typically come severities of information, warning, critical and scheduled.  By adding an uncomming string on the subject line indicating the severity, it can be coded into DaTamer how to process the email.  For example:
 
 * :info: - informational
-* :warning: - warning message
+* :warn: - warning message
 * :critical: - This results in a page or other critical processing
-* :sched-perday-N: - Scheduled email expecting N (a number is used here) per day.  The system could check at any given time and find N mse's in the last 24 hours.  If less or more than that, generate an event / alert.
+
+#### Schedule classification
+While the schedule can vary widely, checking for scheduled emails can be relatively easy.
+
+* :sched-perday-N/V: - Scheduled email expecting N (a number is used here) per day.  The system could check at any given time and find N mse's in the last 24 hours.  V is the allowed variance.  If count of mse's is more than that plus/minus the variance, generate an event / alert.  If the "/V" is not provided, it is assumed to be zero.
+* :sched-permonth-N/V: - This is a scheduled email expecting N (a number is used here per month.  If count of mse's is more than that plus/minus the variance, generate an event / alert.
+* :sched-perhour-N/V: - Same but for each hour.  If count of mse's is more than that plus/minus the variance, generate an event / alert.
 
 #### Organizational classification
+Applications are typically composed of multiple tiers such as presentation, business logic, data tier, monitoring, etc.  Organization mse's by the classification can help identify patterns of events.  Each company, organization or business unit will have its own unique classification.  Many MSEs will be able to be custominzed to include an organizational identifier such as:
+
+* :org:datamer.frontend.ui.service1:
+* :org:datamer.frontend.ui.service2:
+* :org:datamer.frontend.api.service1:
+* :org:datamer.frontend.api.service2:
+* :org:datamer.frontend.haproxy:
+* :org:datamer.logic.mse.organizer.standard:
+* :org:datamer.logic.mse.organizer.ml:  (where ml stands for machine language and is implemented in a future phase)
+* :org:datamer.data.db.olap:  (olap meaning the part of the db that manages relational data)
+* :org:datamer.data.db.ml:  (ml meaning that part of the database that manages the machine learning data)
+
+#### Server information
+Most MSEs are related to a server or parhaps a set of servers.  So, each MSE will include information about the server(s) to which it refers.  This will be the fully qualified domain name (fqdn).  If more than one server is associated with the MSE, then mutiple strings will be included in the body in a format similar to the following:
+
+* :svr:fqdn
+
+
+
 
