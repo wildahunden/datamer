@@ -1,6 +1,9 @@
 # DevOps Alert Tamer (DaTamer)
 Devops Alert Tamer is an open source project applying machine learning and ai techniques to tame the massive amounts of notifications sent to devops group emails.
 
+## Terms
+MSE - monitoring status email.  An email sent from a monitoring tool to provide a status of the system being monitored (e.g., daily backup status, disk space warning email, etc).
+
 ## The Problem
 When a new employee starts with a DevOps group, they subscribe to a distribution list.  That subscription brings with it an avalanche of hundreds or thousands of monitoring status emails (MSEs) every day.  This is a problem in three ways:
 
@@ -82,9 +85,17 @@ Applications are typically composed of multiple tiers such as presentation, busi
 * :org:datamer.data.db.ml:  (ml meaning that part of the database that manages the machine learning data)
 
 #### Server information
-Most MSEs are related to a server or parhaps a set of servers.  So, each MSE will include information about the server(s) to which it refers.  This will be the fully qualified domain name (fqdn).  If more than one server is associated with the MSE, then mutiple strings will be included in the body in a format similar to the following:
+Most MSEs are related to a server or parhaps a set of servers.  So, each MSE will include information about the server name(s) to which it refers.  This will be the fully qualified domain name (fqdn).  If more than one server is associated with the MSE, then mutiple strings will be included in the body in a format similar to the following:
 
 * :svr:fqdn
+
+#### Email Processing
+As new MSE's are generated, they follow the information standards so they can be organized with the automated system.  However, older emails may not conform to the new standards.  Email rules can be created to automatically organize the notifications.  These rules become the beginning set of training for the machine learning that comes in future phases. 
+
+Once emails are organized into a hierarcy of folders, the engineers can begin
+
+### Phase 3: Database
+In phase 2, we moved from a distribution list to a shared email to quickly add the ability to share organization of emails and provide feedback of who is working on which MSE.  In this phase we lay the foundation for 
 
 
 
