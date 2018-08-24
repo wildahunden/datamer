@@ -52,7 +52,11 @@ In this phase we implement traditional organization of MSEs and add communicatio
 The engineers generating the monitoring status emails (MSEs) can often control the content of the subject and body.  By developing a classification system, the content of the MSEs can be adjusted to make classification easier.  Then, an automated system can be developed to organize the MSEs according to the added data in the email subject / body.  This is especially effective for new monitoring systems.  Future phases will address existing monitoring with machine learning, so it's isn't necessary to go back and change all of the existing monitoring.
 
 #### Changing the process engineers use
-DaTamer is assigned its own, unique address. 
+The DaTamer service is assigned its own, unique address.  All MSEs are directed to that email address and DaTamer will organize the incoming emails into folders based on the classification information below.  In the early phase of development of DaTamer, engineers will log into the shared email account to address the MSEs.  There will be two types of emails that engineers will need to address: categorized and uncategorized emails.  
+##### Uncategorized emails
+Uncategorized emails are those which the DaTamer service was unable to classify.   The role of the engineer is to create a mail rule to classify the email properly.  This new mail rule becomes the beginning training for the machine learning tools that come later. The engineer creates the mail rul then moves the MSE to the correct folder in the email.  From there, the MSE can be processed based on the categorized mail rules.
+##### Categorized emails
+One of the problems with current DevOps notification processes is that the email goes to a group of people and nobody is sure if the MSE has been addressed by someone else.  So, it happens that MSEs are not addressed or addressed by more than one engineer.  This process addresses that concern.  Engineers log into the shared email account.  When they take an MSE to address, they move it into a folder with their name under the folder where it was classified.  This communicates to the other engineers that the MSE has been or is being addressed.   
 
 #### Severity classification
 MSE's typically come in severities of information, warning, critical.  By adding an uncommon string indicating the severity on the subject line, it can be coded into DaTamer how to process the email.  For example:
@@ -77,7 +81,7 @@ Applications are typically composed of multiple tiers such as presentation, busi
 * :org:datamer.frontend.api.service2:
 * :org:datamer.frontend.haproxy:
 * :org:datamer.logic.mse.organizer.standard:
-* :org:datamer.logic.mse.organizer.ml:  (where ml stands for machine language and is implemented in a future phase)
+* :org:datamer.logic.mse.organizer.ml:  (where ml stands for machine learning  and is implemented in a future phase)
 * :org:datamer.data.db.olap:  (olap meaning the part of the db that manages relational data)
 * :org:datamer.data.db.ml:  (ml meaning that part of the database that manages the machine learning data)
 
