@@ -55,11 +55,13 @@ In this phase we implement traditional organization of MSEs and add communicatio
 The engineers generating the monitoring status emails (MSEs) can often control the content of the subject and body.  By developing a classification system, the content of the MSEs can be adjusted to make classification easier.  Then, an automated system can be developed to organize the MSEs according to the added data in the email subject / body.  This is especially effective for new monitoring systems.  Future phases will address existing monitoring with machine learning, so it's isn't necessary to go back and change all of the existing monitoring.
 
 #### Changing the process engineers use
-The DaTamer service is assigned its own, unique address.  All MSEs are directed to that email address and DaTamer will organize the incoming emails into folders based on the classification information below.  In the early phase of development of DaTamer, engineers will log into the shared email account to address the MSEs.  There will be two types of emails that engineers will need to address: categorized and uncategorized emails.  
+As new monitoring services are created and new MSE's are generated, they follow the information standards described below so they can be organized with the automated system.  However, older emails may not conform to the new standards and traditional methods of classification may not work.  All MSE's are directed to a unique address for the DaTamer service which will organize the incoming emails into folders based on the classification information below.  In the early phase of development of DaTamer, engineers will log into the shared email account to address the MSEs.  There will be two types of emails that engineers will need to address: categorized and uncategorized emails.  
+
 ##### Uncategorized emails
-Uncategorized emails are those which the DaTamer service was unable to classify.   The role of the engineer is to create a mail rule to classify the email properly.  This new mail rule becomes the beginning training for the machine learning tools that come later. The engineer creates the mail rul then moves the MSE to the correct folder in the email.  From there, the MSE can be processed based on the categorized mail rules.
+Uncategorized emails are those which the DaTamer service was unable to classify.   The role of the engineer is to create a mail rule to classify the email properly.  Since this is a shared email account, the classification will be shared with the entire engineering team.  In addtion, this new mail rule becomes the beginning training for the machine learning tools that come later. The engineer creates the mail rule then moves the MSE to the correct folder in the email.  From there, the MSE can be processed based on the categorized mail rules described next.
+
 ##### Categorized emails
-One of the problems with current DevOps notification processes is that the email goes to a group of people and nobody is sure if the MSE has been addressed by someone else.  So, it happens that MSEs are not addressed or addressed by more than one engineer.  This process addresses that concern.  Engineers log into the shared email account.  When they take an MSE to address, they move it into a folder with their name under the folder where it was classified.  This communicates to the other engineers that the MSE has been or is being addressed.   
+One of the problems with current DevOps notification processes is that the email goes to a group of people and nobody is sure if the MSE has been addressed by someone else.  So, it happens that MSEs are not addressed or are addressed by more than one engineer.  This process addresses that concern.  Engineers log into the shared email account.  When they take an MSE to address, they move it into a folder with their name under the folder where it was classified.  This communicates to the other engineers that the MSE has been or is being addressed. When they have completed processing, they move the MSE from the folder with their name to a folder named, "completed," also under the folder where it was classified.  This provided a mechanism for viewing history for the service. 
 
 #### Severity classification
 MSE's typically come in severities of information, warning, critical.  By adding an uncommon string indicating the severity on the subject line, it can be coded into DaTamer how to process the email.  For example:
@@ -93,14 +95,41 @@ Most MSEs are related to a server or parhaps a set of servers.  So, each MSE wil
 
 * :svr:fqdn
 
-#### Email Processing
-As new MSE's are generated, they follow the information standards so they can be organized with the automated system.  However, older emails may not conform to the new standards.  Email rules can be created to automatically organize the notifications.  These rules become the beginning set of training for the machine learning that comes in future phases. 
-
-Once emails are organized into a hierarcy of folders, the engineers can begin
+### Features for DaTamer in Phase 2
+In phase 2, DaTamer will be able to
+-- Classify emails based on the classification standard listed above using traditional methods
+-- Track scheduled emails based on the schedule classification emails listed above
+-- DaTamer will be monitored using its own methodologies and tools
 
 ### Phase 3: Database
-In phase 2, we moved from a distribution list to a shared email to quickly add the ability to share organization of emails and provide feedback of who is working on which MSE.  In this phase we lay the foundation for 
+In phase 2, we moved from a distribution list to a shared email to quickly add the ability to share organization of emails and provide feedback of who is working on which MSE.  In phase 3 we lay the foundation for for the advanced machine learning features in the next phase and we provide a simple application to allow viewing and processing of messages through the app instead of through the shared email address. We start to introduce the concept of events.  In this phase the system still considers one event the same as one MSE.  In future phases, the machine learning algorithms will be able to recognize when multiple MSEs are related to a single event.  In addition to adding MSEs to the database, the MSE will be deleted from the email account.  Starting with phase 3, all processing of the MSEs will take place in the application.
 
+The database will need to store the MSEs quickly and efficiently as they come in and to classify them appropriately.  In addition, users can subscribe to MSEs by their organization and level of interest.  For example, an engineer can be a "responder" for :org:datamer.frontend.ui.service1: and "interested" for :org:datamer.frontend.ui.*: and can have unlimited associations.  This groupig of subscriptions is always stored as a user group and multiple users can be part of a user group.
 
+#### Application UI specifications
+An engineer logs into the application and is presented with a dashboard of the service health showing:
+-- Total Events Open & assigned/unassigned based on Info, Warning & Critical
 
+From the dashboard, the user can go to a list view of the open events which is sorted by severity (Critical, Warning, Info) and assignment (unassigned before assigned).  The user could then select a filter of Responder / Interested / Unclassified / All.  Node that the second item (Interested) includes the first (Responder).
+
+The list view shows the date the event was generated, a subject from an MSE, severity, classification, who is assigned or unassigned, date of assignment (or blank), and the user's interest level (responder/interested/all).  The user could then click right-click on any item and assign it to any user.  The user to whom it is assigned is notified via email of the assignment.
+
+From the list view, the user can click on any event to see the details of the event.  The event detail screen shows the details of the event (created date, assigned date, who is assigned, severity, etc).  In addition, this screen show a list of MSEs that are related to the event.  In phase 3 there remains a one-to-one relationship between MSE and event.  In future phases, multiple MSE's can be related with a single event.  The event detail screen will also allow the user to create an MSE rule similar to the mail rules created in in phase 2.  These rules are used for future classification as new MSEs are received.  These classification rules are created by engineers so regex combinitation of subject and body and source fqdn are allowed (to name a few).  The rules should be set up for sevrity, classification and :svr:fqdn: where possible.
+
+#### Reports
+This phase has a basic historical report based on a date range including:
+-- MSEs received 
+-- Events created with statistics
+-- -- Total
+-- -- By classification
+-- -- By Severity
+-- -- Open / Closed
+-- Statistics
+-- -- Min, Max, Mean time delay between event creation, event assignment, event completion by severity
+
+#### Database considerations
+This system should be capable of multi-tenancy.  We can have more than one customer in the database and each customer will have its own email address to process.
+
+### Phase 4
+In this phase we add the machine learning features to the system.  As a result of the previous phases, the database has data that can be mined and used for training.  MSEs have classification, severity and server information or rules have been created to classify the MSEs without the necessary information.  The system will now work to find patterns of MSEs so that a single event can be created for multiple MSEs.  In addition, new MSEs can be associated with an open event.  Finally, new events can be related to historical events that have already been completed.
 
